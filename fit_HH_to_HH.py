@@ -146,12 +146,14 @@ np.random.seed(12345)
 
 #set up file dest
 filedest = 'savefolder'
-if os.path.isdir(filedest):
-    for f in glob.glob(os.path.join(filedest, '*')):
-        os.system('rm %s' % f)
-else:
-    os.mkdir(filedest)
+if RANK == 0:
+    if os.path.isdir(filedest):
+        for f in glob.glob(os.path.join(filedest, '*')):
+            os.system('rm %s' % f)
+    else:
+        os.mkdir(filedest)
 
+COMM.Barrier()
 
 #stimulus current amplitudes
 stim_amp = [0.2, -0.05]
@@ -326,8 +328,7 @@ if RANK == 0:
         fig = features.plot_traces()
         fig.savefig(os.path.join(filedest, 'traces_gen%i_var%i.pdf' % (len(generations), i)), )
 
-    plt.show()
-
+    
 
 
 

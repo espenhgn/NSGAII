@@ -137,7 +137,7 @@ class EAMoo:
             
             self.assign_fitness()
             
-            if(self.checkpopulation != None):
+            if(self.checkpopulation is not None):
                 self.checkpopulation(self, 0)
                     
             for gen in range(generations):
@@ -158,12 +158,12 @@ class EAMoo:
 
                 self.assign_fitness()
                 
-                if self.checkfullpopulation != None:
+                if self.checkfullpopulation is not None:
                     self.checkfullpopulation(self, gen)
                     
                 self.new_generation()
                 
-                if(self.checkpopulation != None):
+                if(self.checkpopulation is not None):
                     self.checkpopulation(self, gen)
         
             # tell the slaves (if any) to terminate
@@ -316,7 +316,7 @@ class EAMoo:
                         
                     #objectives_error = self.get_objectives_error(self.unnormit(parameters))
                     
-                    if(objectives_error != None):
+                    if(objectives_error is not None):
                         new_population.append(np.r_[parameters, objectives_error, self.no_properties])
                 else:
                     new_population.append(individual)
@@ -342,7 +342,7 @@ class EAMoo:
                 
                 print 'receive from any dest: %i' % (int(i)+1)
                 
-                if result != None:
+                if result is not None:
                     new_population.append(np.r_[result[0], result[1], self.no_properties])
         
         self.population = np.array(new_population)
@@ -356,7 +356,7 @@ class EAMoo:
             parameters = self.comm.recv(source=0) # wait....
             
             # Does the master want the slave to shutdown?
-            if(parameters == None):
+            if(parameters is None):
                 # Slave finishing...
                 break
             parameters_unnormed = self.unnormit(parameters)
@@ -369,7 +369,7 @@ class EAMoo:
             
             #objectives_error = self.get_objectives_error(self.unnormit(parameters))
             
-            if(objectives_error == None):
+            if(objectives_error is None):
                 self.comm.send(None, dest=0)
             else: 
                 self.comm.send([parameters, objectives_error], dest=0)
